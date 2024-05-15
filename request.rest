@@ -1,0 +1,17 @@
+POST http://127.0.0.1:7000/api/login
+Content-Type: application/json
+
+{
+    "email" : "admin@gmail.com",
+    "password" : "12345678"
+}
+
+###
+GET http://127.0.0.1:7000/api/benda
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInV1aWQiOiJlYTdkNzBkYS03NDNkLTQ3MTEtOTFmYS1iZjc0NGQzMzY0OWIiLCJuYW1hIjoiV29uZyBUdWx1cyIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzE1NzQxOTE2LCJleHAiOjE3MTU3NDE5MzZ9.XMDlNubzQjyrCnbTCz6dcNh5Kt3jXE4PFyk4snoyh64
+
+###
+GET http://127.0.0.1:7000/api/token
+
+###
+DELETE http://127.0.0.1:7000/api/logout
