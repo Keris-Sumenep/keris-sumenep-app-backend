@@ -18,14 +18,10 @@ const db = require("./config/database");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/user");
 const bendaRouter = require("./routes/benda");
+const tourGateRouter = require("./routes/tourGate");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const cors = require("cors");
-
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
 const dbConnect = async () => {
   try {
@@ -44,11 +40,21 @@ const dbConnect = async () => {
   }
 };
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use("/api", indexRouter);
 app.use("/api/user", usersRouter);
 app.use("/api/benda", bendaRouter);
+app.use("/api/tour-gate", tourGateRouter);
 
 app.listen(7000, () => console.log("Aplikasi ini berjalan pada port 7000"));
 dbConnect();
