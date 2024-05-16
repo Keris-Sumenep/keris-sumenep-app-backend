@@ -10,7 +10,7 @@ const getAllTourGet = async (req, res) => {
       payload: tourGate,
     });
   } catch (error) {
-    res.json(500).json({
+    res.status(500).json({
       msg: error.message,
     });
   }
@@ -29,7 +29,7 @@ const getTourGateById = async (req, res) => {
       payload: tourGate,
     });
   } catch (error) {
-    res.json(500).json({
+    res.status(500).json({
       msg: error.message,
     });
   }
@@ -61,7 +61,7 @@ const createTourGate = async (req, res) => {
       msg: "tour gate has been successfully created",
     });
   } catch (error) {
-    res.json(500).json({
+    res.status(500).json({
       msg: error.message,
     });
   }
@@ -108,7 +108,7 @@ const updateTourGate = async (req, res) => {
       msg: "updated tour gate has been successfully",
     });
   } catch (error) {
-    return res.json(500).json({
+    return res.status(500).json({
       msg: error,
     });
   }
@@ -144,7 +144,7 @@ const deleteTourGate = async (req, res) => {
       });
     }
   } catch (error) {
-    res.json(500).json({
+    res.status(500).json({
       msg: error.message,
     });
   }

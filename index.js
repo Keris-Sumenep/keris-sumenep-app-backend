@@ -19,6 +19,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/user");
 const bendaRouter = require("./routes/benda");
 const tourGateRouter = require("./routes/tourGate");
+const gamabarBendaRouter = require("./routes/gambarBenda");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const cors = require("cors");
@@ -55,6 +56,7 @@ app.use("/api", indexRouter);
 app.use("/api/user", usersRouter);
 app.use("/api/benda", bendaRouter);
 app.use("/api/tour-gate", tourGateRouter);
+app.use("/api/gambar-benda", gamabarBendaRouter);
 
 app.listen(7000, () => console.log("Aplikasi ini berjalan pada port 7000"));
 dbConnect();
