@@ -1,13 +1,13 @@
 var { Sequelize } = require("sequelize");
 var uniqid = require("uniqid");
 const database = require("../config/database");
-const Benda = require("./benda");
 const Language = require("./language");
+const Benda = require("./benda");
 
 const { DataTypes } = Sequelize;
 
-const VoiceBenda = database.define(
-  "voice_benda",
+const Deskripsi = database.define(
+  "deskripsi",
   {
     bendaId: {
       type: DataTypes.INTEGER,
@@ -23,18 +23,17 @@ const VoiceBenda = database.define(
         notEmpty: "id language wajib diisi",
       },
     },
-    judul: {
-      type: DataTypes.STRING,
+    deskripsi: {
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        notEmpty: "judul wajib diisi",
-      },
-    },
-    voice: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: "voice wajib diisi",
+        notEmpty: {
+          msg: "Deskripsi wajib diisi",
+        },
+        len: {
+          args: [8],
+          msg: "Deskripsi minimal harus berisi 8 karakter",
+        },
       },
     },
   },
@@ -43,9 +42,9 @@ const VoiceBenda = database.define(
   }
 );
 
-Language.hasMany(VoiceBenda);
-VoiceBenda.belongsTo(Language);
-Benda.hasMany(VoiceBenda);
-VoiceBenda.belongsTo(Benda);
+Language.hasMany(Deskripsi);
+Deskripsi.belongsTo(Language);
+Benda.hasMany(Deskripsi);
+Deskripsi.belongsTo(Benda);
 
-module.exports = VoiceBenda;
+module.exports = Deskripsi;

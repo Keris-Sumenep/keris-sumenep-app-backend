@@ -4,17 +4,17 @@ const { verifyToken } = require("../middleware/verifyToken");
 const multer = require("multer");
 const path = require("path");
 const {
-  getAllTourGet,
-  getTourGateById,
-  createTourGate,
-  updateTourGate,
-  deleteTourGate,
-} = require("../controllers/tourGateController");
+  getAllSetting,
+  getSettingById,
+  createSetting,
+  updateSetting,
+  deleteSetting,
+} = require("../controllers/settingController");
 
 // upload foto
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/tour-gate");
+    cb(null, "public/setting");
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
@@ -42,10 +42,26 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-router.get("/", getAllTourGet);
-router.get("/:id", getTourGateById);
-router.post("/", upload.single("foto"), createTourGate);
-router.patch("/update/:id", upload.single("foto"), updateTourGate);
-router.delete("/delete/:id", deleteTourGate);
+router.get("/", getAllSetting);
+router.get("/:id", getSettingById);
+router.post(
+  "/",
+  upload.fields([
+    { name: "logo_pens" },
+    { name: "logo_aplikasi" },
+    { name: "logo_pens_psdku" },
+  ]),
+  createSetting
+);
+router.patch(
+  "/:id",
+  upload.fields([
+    { name: "logo_pens" },
+    { name: "logo_aplikasi" },
+    { name: "logo_pens_psdku" },
+  ]),
+  updateSetting
+);
+router.delete("/:id", deleteSetting);
 
 module.exports = router;

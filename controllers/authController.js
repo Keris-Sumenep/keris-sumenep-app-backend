@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
@@ -34,7 +34,7 @@ const login = async (req, res) => {
     });
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      res.status(500).json({
+      return res.status(500).json({
         msg: "Email / Password Salah",
       });
     }
@@ -72,7 +72,7 @@ const login = async (req, res) => {
     });
     res.json({ accessToken });
   } catch (error) {
-    res.status(500).json(error);
+    console.log(error);
   }
 };
 

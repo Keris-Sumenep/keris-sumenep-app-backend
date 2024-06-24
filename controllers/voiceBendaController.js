@@ -2,15 +2,12 @@ const path = require("path");
 const fs = require("fs");
 const Benda = require("../models/benda");
 const VoiceBenda = require("../models/voice_benda");
+const Language = require("../models/language");
 
 const getAllVoiceBenda = async (req, res) => {
   try {
     const response = await VoiceBenda.findAll({
-      include: [
-        {
-          model: Benda,
-        },
-      ],
+      include: [Benda, Language],
     });
     res.status(200).json({
       msg: "voice benda has been successfully loaded",
@@ -30,11 +27,7 @@ const getVoiceBendaById = async (req, res) => {
       where: {
         id: id,
       },
-      include: [
-        {
-          model: Benda,
-        },
-      ],
+      include: [Benda, Language],
     });
     res.status(200).json({
       msg: "voice benda has been successfully loaded",
@@ -48,7 +41,7 @@ const getVoiceBendaById = async (req, res) => {
 };
 
 const createVoiceBenda = async (req, res) => {
-  const { bendaId, judul } = req.body;
+  const { bendaId, judul, languageId } = req.body;
   const file = req.file ? req.file.filename : null;
   try {
     if (file == null) {
@@ -60,6 +53,7 @@ const createVoiceBenda = async (req, res) => {
     }
     const data = {
       bendaId,
+      languageId,
       judul,
       voice: file,
     };
@@ -75,25 +69,26 @@ const createVoiceBenda = async (req, res) => {
 };
 
 const updateVoiceBenda = async (req, res) => {
-  const { bendaId, judul } = req.body;
+  const { bendaId, languageId, judul } = req.body;
   const file = req.file ? req.file.filename : null;
   let { id } = req.params;
   try {
-    const VoiceBenda = await VoiceBenda.findOne({
+    const suara = await VoiceBenda.findOne({
       where: {
         id: id,
       },
     });
 
-    let fotoLama = VoiceBenda.voice;
+    let voiceLama = suara.voice;
 
-    if (fotoLama && file) {
-      const pathFile = path.join("./public/foto-benda", fotoLama);
+    if (voiceLama && file) {
+      const pathFile = path.join("./public/voice-benda", voiceLama);
       fs.unlinkSync(pathFile);
     }
 
     const data = {
       bendaId,
+      languageId,
       judul,
     };
 
@@ -119,16 +114,16 @@ const updateVoiceBenda = async (req, res) => {
 const deleteVoiceBenda = async (req, res) => {
   let { id } = req.params;
   try {
-    const VoiceBenda = await VoiceBenda.findOne({
+    const suara = await VoiceBenda.findOne({
       where: {
         id: id,
       },
     });
 
-    let fotoLama = VoiceBenda.voice;
+    let fotoLama = suara.voice;
 
     if (fotoLama) {
-      const pathFile = path.join("./public/foto-benda", fotoLama);
+      const pathFile = path.join("./public/voice-benda", fotoLama);
       fs.unlinkSync(pathFile);
     }
 

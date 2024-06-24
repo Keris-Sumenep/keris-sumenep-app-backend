@@ -1,8 +1,40 @@
 const Benda = require("../models/benda");
+const Deskripsi = require("../models/deskripsi");
+const GambarBenda = require("../models/gambar_benda");
+const Language = require("../models/language");
+const VideoBenda = require("../models/video_benda");
+const VoiceBenda = require("../models/voice_benda");
 
 const getAllBenda = async (req, res) => {
   try {
-    const response = await Benda.findAll();
+    const response = await Benda.findAll({
+      include: [
+        {
+          model: GambarBenda,
+        },
+        {
+          model: VideoBenda,
+        },
+        {
+          model: VoiceBenda,
+          include: [
+            {
+              model: Language,
+              include: [VoiceBenda],
+            },
+          ],
+        },
+        {
+          model: Deskripsi,
+          include: [
+            {
+              model: Language,
+              include: [VoiceBenda],
+            },
+          ],
+        },
+      ],
+    });
     res.status(200).json({
       msg: "benda has been successfully loaded",
       payload: response,
@@ -21,6 +53,22 @@ const getBendaByCode = async (req, res) => {
       where: {
         kode_benda: code,
       },
+      include: [
+        {
+          model: GambarBenda,
+        },
+        {
+          model: VideoBenda,
+        },
+        {
+          model: VoiceBenda,
+          include: [Language],
+        },
+        {
+          model: Deskripsi,
+          include: [Language],
+        },
+      ],
     });
     res.status(200).json({
       msg: "benda has been successfully loaded",
@@ -34,11 +82,10 @@ const getBendaByCode = async (req, res) => {
 };
 
 const createBenda = async (req, res) => {
-  const { nama, deskripsi } = req.body;
+  const { nama } = req.body;
   try {
     const data = {
       nama,
-      deskripsi,
     };
 
     await Benda.create(data);
@@ -46,19 +93,19 @@ const createBenda = async (req, res) => {
       msg: "benda has been successfully created",
     });
   } catch (error) {
-    res.json(500).json({
-      msg: error.message,
-    });
+    // res.status(500).json({
+    //   msg: error.message,
+    // });
+    console.log(error);
   }
 };
 
 const updateBenda = async (req, res) => {
-  const { nama, deskripsi } = req.body;
+  const { nama } = req.body;
   let code = req.params.code;
   try {
     const data = {
       nama,
-      deskripsi,
     };
     await Benda.update(data, {
       where: {

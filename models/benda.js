@@ -24,19 +24,6 @@ const Benda = database.define(
         },
       },
     },
-    deskripsi: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          msg: "Deskripsi wajib diisi",
-        },
-        len: {
-          args: [8, 100],
-          msg: "Deskripsi minimal harus berisi 8 karakter",
-        },
-      },
-    },
   },
   {
     freezeTableName: true,
